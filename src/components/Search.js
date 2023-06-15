@@ -24,7 +24,10 @@ function Search({ posts, setPostItems }) {
           }
         }
       });
-      setPostItems(postItems,e.target.value);
+      if( setPostItems){
+        setPostItems(postItems,e.target.value);
+      }
+      
     }
   };
   return (
