@@ -12,6 +12,6 @@ test('Dashboard table rendered', () => {
 });
 test('Dashboard table mock poll data Title rendered', async() => {
     render(<Dashboard/>);
-    let tableDataTitle =  await  waitFor(()=>expect(screen.findByTestId('data-title'))); 
+    let tableDataTitle =  await  waitFor(()=>expect(screen.findByText(MOCK_POLL[0].title)));  
      expect(tableDataTitle).toBeInTheDocument
   });
