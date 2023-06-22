@@ -5,6 +5,7 @@ import Search from "./Search";
 import Pagination from "./Pagination";
 import Service from "../Services/Services";
 import { IPosts } from "../constants/Interface";
+import { MOCK_POLL, Mock_Data } from "../constants/mock";
 function Dashboard() {
   const [posts, setPost] = useState<IPosts[]>([]);
   const [page, setPage] = useState(0);
@@ -18,9 +19,7 @@ function Dashboard() {
        
           try {
             if (data && data.hits && data.hits.length > 0) {
-              setFilteredPost([...posts, ...data.hits]);
-            } else {
-              console.log("No Polls");
+              setFilteredPost(data.hits);
             }
           } catch (e) {
             console.log(e);
@@ -51,7 +50,7 @@ function Dashboard() {
     getFilteredData(); // fetch for the first time
 
     function refreshData() {
-        var interval;
+        let interval;
       if (sessionStorage.getItem("currentPage") == '0') {
          interval = setInterval(() => {
           getFilteredData();
@@ -74,8 +73,11 @@ function Dashboard() {
 
   return (
     <div>
-      <Search posts={filteredPost} setPostItems={getSearchValues} />
+      <Search 
+      posts={(filteredPost && filteredPost.length>0)?filteredPost:(posts && posts.length>0) ? posts:MOCK_POLL  } 
+      setPostItems={getSearchValues} />
       <table data-testid="table">
+        <tbody>
         <tr>
           <th>Title</th>
           <th>Url</th>
@@ -86,8 +88,10 @@ function Dashboard() {
         {filteredPost &&
           filteredPost.length > 0 &&
           filteredPost.map((post, i) => {
-            return <Table post={post} />;
+            return <Table post={post} key={i}/>;
           })}
+        </tbody>
+        
       </table>
       <Pagination page={page} setPage={setPage} fetchNextData={fetchNextData} />
     </div>
